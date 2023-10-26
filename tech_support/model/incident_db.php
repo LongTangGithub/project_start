@@ -1,6 +1,5 @@
 <?php
 
-
 function get_customer_products($email) {
     global $db;
     $query = 'SELECT c.customerID, c.firstName, c.lastName, c.email, p.productCode, p.name, p.version  
