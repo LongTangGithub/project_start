@@ -1,14 +1,5 @@
 <?php
 
-function get_incidents() {
-    global $db;
-    $query = 'SELECT * FROM incidents';
-    $statement = $db->prepare($query);
-    $statement->execute();
-    $incidents = $statement->fetchAll();
-    $statement->closeCursor();
-    return $incidents;
-}
 
 function get_customer_products($email) {
     global $db;
@@ -25,8 +16,8 @@ function get_customer_products($email) {
 function create_incident($cid, $procode, $title, $descr) {
     global $db;
     $dt = date('Y-m-d H:i:s');
-    $sql = 'INSERT INTO incidents (incidentID, customerID, productCode, techID, dateOpened, dateClosed, title, description) VALUES (NULL, :cid, :procode, NULL, :dt, NULL, :title, :descr)';
-    $statement = $db->prepare($sql);
+    $query = 'INSERT INTO incidents (incidentID, customerID, productCode, techID, dateOpened, dateClosed, title, description) VALUES (NULL, :cid, :procode, NULL, :dt, NULL, :title, :descr)';
+    $statement = $db->prepare($query);
     $statement->bindValue(':cid', $cid);
     $statement->bindValue(':procode', $procode);
     $statement->bindValue(':dt', $dt);
