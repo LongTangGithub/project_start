@@ -10,5 +10,11 @@
         <input type="email" name="email" />
         <input type="submit" value="Get Customer" />
     </form>
+    <?php
+    // Display error message if email does not exist.
+    if (isset($error_message)) {
+        echo '<p>' . $error_message . '</p>';
+    }
+    ?>
 </main>
 <?php include '../view/footer.php'; ?>

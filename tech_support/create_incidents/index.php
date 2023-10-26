@@ -10,7 +10,7 @@ $action = filter_input(INPUT_POST, 'action');
 if ($action === NULL) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === NULL) {
-        $action = 'display_incidents';
+        $action = 'get_customer';
     }
 }
 if ($action == 'get_customer'){
