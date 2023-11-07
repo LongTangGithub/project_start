@@ -14,8 +14,8 @@
         <input type="text" name="version"><br>
 
         <label>Release Date:</label>
-        <input type="text" name="release_date" />
-        <label class="message">Use 'yyyy-mm-dd' format</label><br>
+        <input type="text" name="release_date" placeholder="e.g., MM/DD/YYYY "/>
+        <label class="message">Use any valid date format</label><br>
 
         <label>&nbsp;</label>
         <input type="submit" value="Add Product" /><br>
