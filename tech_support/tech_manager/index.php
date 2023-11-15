@@ -1,6 +1,14 @@
 <?php
-require('../model/database.php');
+require('database_oo.php');
+require('technician.php');
+
+
+// Create a new database ojbect and connect via function defined in database_oop.php
+$db = new database();
+$db = $db->connect();
+
 require('../model/technician_db.php');
+
 
 $action = filter_input(INPUT_POST, 'action');
 if ($action === NULL) {

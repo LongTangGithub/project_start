@@ -44,15 +44,35 @@ function add_technician($technician_id, $first_name, $last_name, $email, $phone,
     
 }
 
-function get_technician_by_email($email){
+function get_technician($id) {
     global $db;
-    $query = 'SELECT * FROM technicians ' .
-             'WHERE email = :email';
-    $statement = $db->prepare($query);
-    $statement->bindValue(':email', $email);
-    $statement->execute();
-    $technician = $statement->fetch();
-    $statement->closeCursor();
-    return $technician;
+    $query = 'SELECT * FROM technicians
+              WHERE techID = :id';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        return $result;
+    } catch (PDOException $e) {
+        display_db_error($e->getMessage());
+    }
+}
+
+function get_technician_by_email($email) {
+    global $db;
+    $query = 'SELECT * FROM technicians
+              WHERE email = :email';
+    try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch();
+        $statement->closeCursor();
+        return $result;
+    } catch (PDOException $e) {
+        display_db_error($e->getMessage());
+    }
 }
 ?>
