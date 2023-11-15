@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 function get_products() {
     global $db;
     $query = 'SELECT * FROM products
@@ -47,7 +49,7 @@ function delete_product($product_code) {
     $statement->closeCursor();
 }
 
-function add_product($code, $name, $version, $release_date) {
+function add_product(string $code, string $name, float $version, string $release_date): void {
     global $db;
     $query = 'INSERT INTO products
                  (productCode, name, version, releaseDate)
@@ -62,7 +64,7 @@ function add_product($code, $name, $version, $release_date) {
     $statement->closeCursor();
 }
 
-function update_product($code, $name, $version, $release_date) {
+function update_product(string $code, string $name, float $version, string $release_date): void {
     global $db;
     $query = 'UPDATE products
               SET name = :name,

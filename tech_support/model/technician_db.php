@@ -43,4 +43,16 @@ function add_technician($technician_id, $first_name, $last_name, $email, $phone,
     $statement->closeCursor();
     
 }
+
+function get_technician_by_email($email){
+    global $db;
+    $query = 'SELECT * FROM technicians ' .
+             'WHERE email = :email';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    $technician = $statement->fetch();
+    $statement->closeCursor();
+    return $technician;
+}
 ?>
