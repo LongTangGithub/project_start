@@ -1,39 +1,41 @@
 <?php
 
+//Get all technicians and display them
 function get_technicians() {
     global $db;
-    $query = 'SELECT * FROM technicians
-              ORDER BY lastName';
-    
+    $query = 'SELECT `technicians`.techID, firstName, lastName, count(`incidents`.`incidentID`) AS incidents 
+              FROM `technicians`
+                LEFT JOIN `incidents` 
+                ON `technicians`.`techID` = `incidents`.`techID`
+              GROUP BY `technicians`.`techID` 
+              ORDER BY incidents ASC';
     $statement = $db->prepare($query);
     $statement->execute();
     $technicians = $statement->fetchAll();
-    $statement-> closeCursor();
+    $statement->closeCursor();
     return $technicians;
-    
 }
 
-function delete_technician($technician_id){
+//Delete the selected technician by their tech_id parameter
+function delete_technician($tech_id) {
     global $db;
     $query = 'DELETE FROM technicians
-              WHERE techID = :technician_id';
-    
+              WHERE techID = :tech_id';
     $statement = $db->prepare($query);
-    $statement->bindValue(':technician_id', $technician_id);
+    $statement->bindValue(':tech_id', $tech_id);
     $statement->execute();
-    $statement-> closeCursor();
-    
+    $statement->closeCursor();
 }
 
-function add_technician($technician_id, $first_name, $last_name, $email, $phone, $password) {
+//Add a new technician with the parameters passed through
+//Insert them into the technicians database
+function add_technician($first_name, $last_name, $email, $phone, $password) {
     global $db;
     $query = 'INSERT INTO technicians
-                 (techID, firstName, lastName, email, phone, password)
+                 (firstName, lastName, email, phone, password)
               VALUES
-                 (:technician_id, :first_name, :last_name, :email, :phone, :password)';
-    
+                 (:first_name, :last_name, :email, :phone, :password)';
     $statement = $db->prepare($query);
-    $statement->bindValue(':technician_id', $technician_id);
     $statement->bindValue(':first_name', $first_name);
     $statement->bindValue(':last_name', $last_name);
     $statement->bindValue(':email', $email);
@@ -41,38 +43,17 @@ function add_technician($technician_id, $first_name, $last_name, $email, $phone,
     $statement->bindValue(':password', $password);
     $statement->execute();
     $statement->closeCursor();
-    
 }
 
-function get_technician($id) {
+function get_technician_by_email($email){
     global $db;
-    $query = 'SELECT * FROM technicians
-              WHERE techID = :id';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bindValue(':id', $id);
-        $statement->execute();
-        $result = $statement->fetch();
-        $statement->closeCursor();
-        return $result;
-    } catch (PDOException $e) {
-        display_db_error($e->getMessage());
-    }
-}
-
-function get_technician_by_email($email) {
-    global $db;
-    $query = 'SELECT * FROM technicians
-              WHERE email = :email';
-    try {
-        $statement = $db->prepare($query);
-        $statement->bindValue(':email', $email);
-        $statement->execute();
-        $result = $statement->fetch();
-        $statement->closeCursor();
-        return $result;
-    } catch (PDOException $e) {
-        display_db_error($e->getMessage());
-    }
+    $query = 'SELECT * FROM technicians ' .
+             'WHERE email = :email';
+    $statement = $db->prepare($query);
+    $statement->bindValue(':email', $email);
+    $statement->execute();
+    $technician = $statement->fetch();
+    $statement->closeCursor();
+    return $technician;
 }
 ?>
